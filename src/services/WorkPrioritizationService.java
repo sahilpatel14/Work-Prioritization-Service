@@ -71,9 +71,7 @@ public class WorkPrioritizationService {
     }
 
     private DataStream.JobStreamCallback setupJobStreamCallback() {
-        return job -> {
-            jobSkillMap.get(job.getSkill()).add(job);
-        };
+        return job -> jobSkillMap.get(job.getSkill()).add(job);
     }
 
     private void fillWorkerSkillMap(List<Worker> workerList) {
@@ -82,10 +80,20 @@ public class WorkPrioritizationService {
                         workerSkillMap.get(skill).add(worker))
         );
 
-        workerSkillMap.forEach(((skill, workers) -> {
+        workerSkillMap.forEach((skill, workers)->
+                workers.sort(getWorkerComparator()));
+    }
 
-        }));
+    private Comparator<Worker> getWorkerComparator() {
+        return (w1, w2)->{
 
+            if (w1.getAssignedJobs().size() == w2.getAssignedJobs().size()) {
+                return Long.compare(w1.getWorkerID(), w2.getWorkerID());
+            }
+            else {
+                return Integer.compare(w1.getAssignedJobs().size(), w2.getAssignedJobs().size());
+            }
+        };
     }
 
     private class JobAssigner extends Thread {
@@ -117,13 +125,10 @@ public class WorkPrioritizationService {
                         continue;
                     }
                     Worker worker = workerSkillMap.get(skill).iterator().next();
-                    Worker worker1 = workerSkillMap.get(skill).iterator().next();
-                    workerTreeSet.forEach(System.out::println);
                     worker.assignJob(job);
-                    workerSkillMap.get(skill).remove(worker1);
-//                    workerSkillMap.get(skill).add(worker);
+                    workerSkillMap.get(skill).sort(getWorkerComparator());
                     jobSkillMap.get(skill).remove(job);
-                    Thread.sleep(10000);
+                    Thread.sleep(100);
                 }
             }
             catch (InterruptedException e){

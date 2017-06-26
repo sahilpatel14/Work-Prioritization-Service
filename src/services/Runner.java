@@ -17,7 +17,7 @@ public class Runner {
 
         WorkPrioritizationService service = WorkPrioritizationService.getInstance();
         DataStream dataStream = new FakeDataStream();
-        service.startService(FakeWorkersData.generateWorkers(3),dataStream);
+        service.startService(FakeWorkersData.generateWorkers(10),dataStream);
 
 //        Set<Worker> myWorkers = new TreeSet<>();
 //

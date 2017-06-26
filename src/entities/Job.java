@@ -25,9 +25,9 @@ public class Job implements Comparable<Job>{
     @Override
     public int compareTo(Job other) {
 
-        return this.jobPriority == other.jobPriority ?
-                (int) (this.jobID - other.jobID) :
-                this.jobPriority - other.jobPriority;
+        return other.jobPriority == this.jobPriority ?
+                (int) (other.jobID - this.jobID) :
+                other.jobPriority - this.jobPriority;
     }
 
     @Override

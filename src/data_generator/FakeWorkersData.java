@@ -27,16 +27,13 @@ public class FakeWorkersData {
 
     private static Set<Skill> generateRandomSkills() {
 
-        int maxSkills = random.nextInt(5);
-        maxSkills = maxSkills == 0? 1 : maxSkills;
         Set<Skill> skillSet = new HashSet<>(1);
-        skillSet.add(Skill.S1);
-//        maxSkills = 1;
-//        int i = 0;
-//        while (i < maxSkills){
-//            skillSet.add(Skill.values()[i]);
-//            i++;
-//        }
+        int maxSkills = 1;
+        int i = 0;
+        while (i < maxSkills){
+            skillSet.add(Skill.values()[random.nextInt(5)]);
+            i++;
+        }
         return skillSet;
     }
 }
