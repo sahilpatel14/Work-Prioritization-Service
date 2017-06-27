@@ -92,7 +92,7 @@ public class WorkPrioritizationService {
 
     }
 
-    // Here we only start a job assignment thread if there are any workers
+    // Here we only start a job assignment thread if there  are any workers
     // assigned to it.
     private void startJobAssignment() {
 
