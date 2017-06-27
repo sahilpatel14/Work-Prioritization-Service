@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Worker implements Comparable{
+public class Worker {
 
+    // a global variable to provide unique incremental Ids to Workers
     private static long globalWorkerID;
 
+    // Unique identifier for every worker
     private final long workerID;
+
+    //  A set of all skills of a particular worker
     private final Set<Skill> skillSet = new LinkedHashSet<>(5);
+
+    //  A List of All the Jobs that are assigned to Worker
     private ArrayList<Job> assignedJobs;
 
-
-    public Worker(Skill skill) {
-        skillSet.add(skill);
-        this.workerID = globalWorkerID++;
-        assignedJobs = new ArrayList<>();
-    }
 
     public Worker(Set<Skill> skills) {
         skillSet.addAll(skills);
@@ -25,14 +25,16 @@ public class Worker implements Comparable{
         assignedJobs = new ArrayList<>();
     }
 
-    public Skill getWorkerSkill(){
-        return skillSet.iterator().next();
-    }
 
     public Set<Skill> getWorkerSkillSet() {
         return skillSet;
     }
 
+    /**
+     * Adds a particular job to list of assigned Jobs for
+     * this worker
+     * @param job , to be assigned
+     */
     public void assignJob(Job job) {
         assignedJobs.add(job);
     }
@@ -48,48 +50,8 @@ public class Worker implements Comparable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Worker){
-            return compareTo(obj) == 0;
-        }
-        else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode() {
-        int hashCode = (int)workerID;
-        hashCode += skillSet.hashCode();
-        return (hashCode);
-    }
-
-    @Override
-    public int compareTo(Object o) {
-
-
-        if (!(o instanceof Worker))
-            return -1;
-
-
-        Worker worker = (Worker) o;
-        if (this.assignedJobs.size() == worker.assignedJobs.size()) {
-            return Long.compare(this.workerID, worker.workerID);
-        }
-        else {
-            return Integer.compare(assignedJobs.size(), worker.assignedJobs.size());
-        }
-//
-//        int r = Long.compare(this.workerID, worker.workerID);
-//
-//        if (r == 0)
-//            return r;
-//
-//        r = Integer.compare(this.assignedJobs.size(), worker.assignedJobs.size());
-//
-//        if ( r == 0)
-//            return -1;
-//
-//        return r;
+        return (obj instanceof Worker ) &&
+                ((Worker)obj).getWorkerID() == workerID;
     }
 
     @Override

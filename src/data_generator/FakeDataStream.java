@@ -11,16 +11,19 @@ import java.util.Random;
  * the data stream. JobStreamCallback is used to return job whenever it is ready.
  *
  * We can update minimum and maximum delay between two jobs.
- *
  * To stop the stream call stopStream method.
  */
 public class FakeDataStream extends Thread implements DataStream {
 
     private JobStreamCallback callback;
 
+    // minimum time delay between two job responses.
     private static final int minimumTimeDelayInMs = 500;
+
+    // maximum time delay between two job responses.
     private static final int maximumTimeDelayInMs = 1000;
 
+    // generates random data in a particular range.
     private Random randomNumberGenerator = new Random();
 
     public FakeDataStream() { }
@@ -54,6 +57,11 @@ public class FakeDataStream extends Thread implements DataStream {
         super.interrupt();
     }
 
+    /**
+     * Creates a random Job object with a random skill type and
+     * a random priority level
+     * @return , a Job object.
+     */
     private synchronized Job getJob() {
 
         Skill skill = Skill.values()[randomNumberGenerator.nextInt(5)];
