@@ -92,6 +92,20 @@ public class WorkPrioritizationService {
 
     }
 
+    /**
+     * Returns all the workers with assigned values.
+     * @return , list of all workers.
+     */
+    public List<Worker> getWorkers() {
+
+        List<Worker> workers = new ArrayList<>();
+        workerSkillMap.forEach((skill, workersList) ->
+            workers.addAll(workersList)
+        );
+
+        return workers;
+    }
+
     // Here we only start a job assignment thread if there  are any workers
     // assigned to it.
     private void startJobAssignment() {
