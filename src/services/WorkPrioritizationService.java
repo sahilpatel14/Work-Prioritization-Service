@@ -24,7 +24,7 @@ public class WorkPrioritizationService {
     private final Map<Skill, TreeSet<Job>> jobSkillMap = new HashMap<>(5);
 
     //  Stores a mapping between skills and workers.
-    private final Map<Skill, List<Worker>> workerSkillMap = new HashMap<>(5);
+    private final Map<Skill, LinkedList<Worker>> workerSkillMap = new HashMap<>(5);
 
     // Callback required to get jobs from live stream of data.
     private final DataStream.JobStreamCallback jobStreamCallback;
@@ -139,8 +139,6 @@ public class WorkPrioritizationService {
                 worker.getWorkerSkillSet().forEach(skill ->
                         workerSkillMap.get(skill).add(worker))
         );
-        workerSkillMap.forEach((skill, workers)->
-                workers.sort(getWorkerComparator()));
     }
 
     /*
@@ -190,11 +188,11 @@ public class WorkPrioritizationService {
                     Job job = jobSkillMap.get(skill).first();
 
                     // grab the first Worker, having least no. of jobs and assign job to him
-                    Worker worker = workerSkillMap.get(skill).iterator().next();
+                    Worker worker = workerSkillMap.get(skill).remove();
                     worker.assignJob(job);
 
                     // update the list order. The assigned worker will now go back.
-                    workerSkillMap.get(skill).sort(getWorkerComparator());
+                    workerSkillMap.get(skill).add(worker);
 
                     // remove the assigned job from the list
                     jobSkillMap.get(skill).remove(job);
